@@ -15,10 +15,11 @@
 
 .playlist-panel {
   width: min(90vw, 340px);
-  max-height: min(70dvh, 420px);
+  height: min(70vh, 420px); /* fallback for browsers without dvh support */
+  height: min(70dvh, 420px);
 
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
 
   background: linear-gradient(160deg, rgba(35, 14, 11, 0.96) 0%, rgba(16, 6, 5, 0.96) 100%);
   border: 1px solid rgba(209, 160, 74, 0.35);
@@ -56,7 +57,6 @@
   justify-content: space-between;
   padding: 0.7rem 0.6rem 0.7rem 1rem;
   border-bottom: 1px solid rgba(209, 160, 74, 0.22);
-  flex-shrink: 0;
 }
 
 .playlist-panel__label {
@@ -96,14 +96,39 @@
 }
 
 .playlist-panel__list {
+  min-height: 0;
+  min-width: 0;
   list-style: none;
   margin: 0;
   padding: 0.35rem;
   overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(209, 160, 74, 0.55) transparent;
+}
+
+.playlist-panel__list::-webkit-scrollbar {
+  width: 5px;
+}
+
+.playlist-panel__list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.playlist-panel__list::-webkit-scrollbar-thumb {
+  background: rgba(209, 160, 74, 0.55);
+  border-radius: 999px;
+}
+
+.playlist-panel__list::-webkit-scrollbar-thumb:hover {
+  background: rgba(209, 160, 74, 0.8);
 }
 
 .playlist-panel__item {
   width: 100%;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -127,11 +152,16 @@
 }
 
 .playlist-panel__title {
+  width: 100%;
+  min-width: 0;
   color: #f3e4c4;
   font-family: 'Marcellus', 'Georgia', serif;
   font-size: 0.88rem;
   font-weight: 400;
   letter-spacing: 0.01em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .playlist-panel__item--active .playlist-panel__title {
@@ -139,9 +169,14 @@
 }
 
 .playlist-panel__artist {
+  width: 100%;
+  min-width: 0;
   color: rgba(243, 228, 196, 0.55);
   font-family: 'Marcellus', 'Georgia', serif;
   font-size: 0.7rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

@@ -19,4 +19,3 @@ npm run build
 
 - The playlist (`src/data/playlist.js`) currently uses placeholder `example.com` audio URLs — swap in real hosted MP3 URLs to make playback work.
 - The background is a CSS gradient placeholder. To use a real photo, save it to `public/bg-poster.jpg` and uncomment the `url(...)` line in `src/App.css`.
-# musicApp

@@ -4,61 +4,124 @@
   right: 10%;
   transform: translateY(-50%);
   z-index: 1;
-
-  width: clamp(140px, 34vmin, 360px);
-  aspect-ratio: 1 / 1;
+  width: clamp(150px, 34vmin, 360px);
+  aspect-ratio: 1;
   border-radius: 50%;
-
-  filter: drop-shadow(0 18px 40px rgba(8, 3, 2, 0.55));
+  filter: drop-shadow(0 18px 40px rgba(8, 3, 2, 0.58));
 }
 
-/* A quiet ambient glow behind the disk, like stage light catching it —
-   static, no motion, just depth. */
 .vinyl::before {
   content: '';
   position: absolute;
   inset: -18%;
   z-index: -1;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(209, 160, 74, 0.22) 0%, transparent 68%);
+  background: radial-gradient(circle, rgba(209, 160, 74, 0.2) 0%, transparent 68%);
 }
 
-.vinyl__disk {
+/* The visible asymmetric details live inside the rotating record so the eye can clearly read the motion. */
+.vinyl__record {
+  position: relative;
   width: 100%;
   height: 100%;
-  display: block;
-  animation: vinyl-spin 5s linear infinite;
-  /* animation-play-state (not display/mount toggling) is what freezes and
-     resumes rotation at its current angle instead of restarting from 0deg. */
+  border-radius: 50%;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 34% 28%, rgba(255, 255, 255, 0.12) 0 1%, transparent 10%),
+    radial-gradient(circle at 50% 50%, #15100f 0 16%, transparent 16.5%),
+    repeating-radial-gradient(circle at center, #090706 0 1px, #17110f 1.5px 3px, #0b0807 3.5px 5px);
+  border: 1px solid rgba(243, 228, 196, 0.18);
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.7),
+    inset 0 0 35px rgba(0, 0, 0, 0.8);
+  animation: vinyl-spin 4.5s linear infinite;
   animation-play-state: paused;
+  will-change: transform;
 }
 
-.vinyl__disk--spinning {
+.vinyl--playing .vinyl__record {
   animation-play-state: running;
 }
 
+.vinyl__groove {
+  position: absolute;
+  inset: 10%;
+  border: 1px solid rgba(243, 228, 196, 0.1);
+  border-radius: 50%;
+}
+
+.vinyl__groove--2 { inset: 22%; }
+.vinyl__groove--3 { inset: 31%; }
+.vinyl__groove--4 { inset: 39%; }
+
+.vinyl__shine {
+  position: absolute;
+  inset: 4%;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 205deg,
+    transparent 0deg,
+    rgba(255, 255, 255, 0.13) 12deg,
+    transparent 30deg,
+    transparent 155deg,
+    rgba(209, 160, 74, 0.09) 173deg,
+    transparent 195deg,
+    transparent 360deg
+  );
+  mix-blend-mode: screen;
+}
+
+.vinyl__label {
+  position: absolute;
+  inset: 29%;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  text-align: center;
+  background:
+    radial-gradient(circle at 35% 30%, rgba(243, 228, 196, 0.16), transparent 45%),
+    #a8492a;
+  border: 1px solid rgba(243, 228, 196, 0.28);
+  box-shadow: inset 0 0 12px rgba(43, 15, 13, 0.45);
+}
+
+.vinyl__label-text {
+  font-family: 'Marcellus', Georgia, serif;
+  font-size: clamp(0.38rem, 1.1vmin, 0.62rem);
+  letter-spacing: 0.2em;
+  color: rgba(243, 228, 196, 0.72);
+}
+
+.vinyl__label-center {
+  font-family: 'Yatra One', 'Noto Sans Devanagari', system-ui, sans-serif;
+  font-size: clamp(0.75rem, 2.4vmin, 1.4rem);
+  line-height: 1;
+  color: #f3e4c4;
+}
+
+.vinyl__label-hole {
+  position: absolute;
+  width: 7%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #100807;
+  box-shadow: 0 0 0 1px rgba(243, 228, 196, 0.18);
+}
+
 @keyframes vinyl-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .vinyl__disk {
-    animation: none;
-  }
-}
-
-/* Keep the disk from crowding the title on short/narrow viewports */
 @media (max-width: 640px) {
   .vinyl {
     top: 40%;
     right: 50%;
     transform: translate(50%, -50%);
-    width: clamp(120px, 46vmin, 260px);
+    width: clamp(125px, 46vmin, 260px);
   }
 }
 
@@ -69,3 +132,9 @@
     width: clamp(110px, 30vmin, 220px);
   }
 }
+
+/* @media (prefers-reduced-motion: reduce) {
+  .vinyl__record {
+    animation: none;
+  }
+} */

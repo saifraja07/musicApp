@@ -46,7 +46,7 @@
   position: absolute;
   inset: 0;
   background-image:
-    /* url('/bg-poster.jpg'), */
+    url('/bg-poster.webp'),
     radial-gradient(120% 90% at 25% 15%, #7a2f1f 0%, transparent 55%),
     radial-gradient(100% 80% at 80% 85%, #3a1310 0%, transparent 60%),
     linear-gradient(155deg, #3a1310 0%, #6b2318 35%, #a8492a 65%, #d1a04a 100%);
@@ -101,6 +101,7 @@
     left: 6%;
     right: 6%;
     max-width: 100%;
+    padding-bottom: 14px;
     /* Smaller floor keeps the title on one line on narrow phones,
        so it stays a predictable height and clears the vinyl above it. */
     font-size: clamp(2.1rem, 8vw, 3.8rem);

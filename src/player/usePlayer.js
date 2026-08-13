@@ -9,6 +9,7 @@ function usePlayer() {
   const [isPlaying, setIsPlaying] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
   const [duration, setDuration] = useState(0)
+  const [volume, setVolume] = useState(1)
 
   const currentSong = playlist[currentIndex]
 
@@ -42,11 +43,34 @@ function usePlayer() {
     if (isPlaying) {
       audio.pause()
       setIsPlaying(false)
-    } else {
-      audio.play().catch(() => {})
-      setIsPlaying(true)
+      return
     }
+
+    audio
+      .play()
+      .then(() => setIsPlaying(true))
+      .catch(() => setIsPlaying(false))
   }, [isPlaying])
+
+  const changeVolume = useCallback((value) => {
+    const audio = audioRef.current
+    const nextVolume = Math.min(1, Math.max(0, Number(value)))
+
+    setVolume(nextVolume)
+    if (audio) audio.volume = nextVolume
+  }, [])
+
+  useEffect(() => {
+    if (audioRef.current) audioRef.current.volume = volume
+  }, [volume])
+
+  const handlePlay = useCallback(() => {
+    setIsPlaying(true)
+  }, [])
+
+  const handlePause = useCallback(() => {
+    setIsPlaying(false)
+  }, [])
 
   const playNext = useCallback(() => {
     setCurrentIndex((index) => (index + 1) % playlist.length)
@@ -91,7 +115,9 @@ function usePlayer() {
     isPlaying,
     currentTime,
     duration,
+    volume,
     togglePlay,
+    changeVolume,
     playNext,
     playPrevious,
     selectSong,
@@ -99,6 +125,8 @@ function usePlayer() {
     handleTimeUpdate,
     handleLoadedMetadata,
     handleEnded,
+    handlePlay,
+    handlePause,
   }
 }
 

@@ -32,6 +32,7 @@ function PlaylistPanel({ currentIndex, onSelect, onClose }) {
                   className={`playlist-panel__item${isActive ? ' playlist-panel__item--active' : ''}`}
                   onClick={() => onSelect(index)}
                   aria-current={isActive ? 'true' : undefined}
+                  title={`${song.title} — ${song.artist}`}
                 >
                   <span className="playlist-panel__title">{song.title}</span>
                   <span className="playlist-panel__artist">{song.artist}</span>
