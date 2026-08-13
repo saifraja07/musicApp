@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import playlists from '../data/playlist'
 
-const DEFAULT_CATEGORY = 'ghazals'
+const DEFAULT_CATEGORY = 'oldHindi'
 
 // Encapsulates all HTML5 <audio> state and controls for the playlist.
 // The returned `audioRef` must be attached to an <audio> element.
