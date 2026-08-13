@@ -74,14 +74,14 @@ const playlists = {
       title: 'Chand Tare Phool',
       artist: 'Nakul Kapoor',
       audio:
-        'https://pub-a6302670efd7401389e9713b7566f607.r2.dev/90s-hindi-songs/chand-tare-phool-4k-video-tum-se-achcha-kaun-hai-nakul-kapoor-90s-best-romantic-songs.mp3',
+        'https://pub-a6302670efd7401389e9713b7566f607.r2.dev/90s-hindi-songs/chand-tare-phool-4k-video-tum-se-achcha-kaun-hai-nakul-kapoor-90-s-best-romantic-songs.mp3',
     },
     {
       id: 'old-hindi-5',
       title: 'Dil De Diya Hai',
       artist: 'Anand Raj Anand',
       audio:
-        'https://pub-a6302670efd7401389e9713b7566f607.r2.dev/90s-hindi-songs/dil-de-diya-hai-lyrical-video-masti-anand-raj-anand-vivek-oberoi-amrita-ritesh-deshmukh-genelia.mp3',
+        'https://pub-a6302670efd7401389e9713b7566f607.r2.dev/90s-hindi-songs/dil-de-diya-hai-lyrical-video-masti-anand-raj-anand-vivek-oberoi-amrita-ritesh-deshmukh-genila.mp3',
     },
     {
       id: 'old-hindi-6',
@@ -109,7 +109,7 @@ const playlists = {
       title: 'Main Agar Saamne',
       artist: 'Abhijeet, Alka Yagnik',
       audio:
-        'https://pub-a6302670efd7401389e9713b7566f607.r2.dev/90s-hindi-songs/main-agar-saamne-raaz-dino-more-bipasha-basu-abhijeet-alka-yagnik-hindi-hit-songs.mp3',
+        'https://pub-a6302670efd7401389e9713b7566f607.r2.dev/90s-hindi-songs/main-agar-saamne-raaz-dino-morea-bipasha-basu-abhijeet-alka-yagnik-hindi-hit-songs.mp3',
     },
     {
       id: 'old-hindi-10',
@@ -123,7 +123,7 @@ const playlists = {
       title: 'Meri Tarah Tum Bhi',
       artist: 'Alka Yagnik, Babul Supriyo',
       audio:
-        'https://pub-a6302670efd7401389e9713b7566f607.r2.dev/90s-hindi-songs/meri-tarah-tum-bhi-lyrical-kya-yehi-pyaar-hai-alka-yagnik-babul-supriyo-ameesha-patel-aftab.mp3',
+        'https://pub-a6302670efd7401389e9713b7566f607.r2.dev/90s-hindi-songs/meri-tarah-tum-bhi-lyrical-kya-yehi-pyaar-hai-alka-yagnik-babul-suprio-ameesha-patel-aftab.mp3',
     },
     {
       id: 'old-hindi-12',
@@ -144,14 +144,14 @@ const playlists = {
       title: 'Oye Raju Pyaar Na Kariyo',
       artist: 'Anand Bakshi',
       audio:
-        'https://pub-a6302670efd7401389e9713b7566f607.r2.dev/90s-hindi-songs/oye-raju-pyar-na-kariyo-lyrical-video-hadh-kar-di-aapne-anand-bakshi-udit-narayan-govinda-rani.mp3',
+        'https://pub-a6302670efd7401389e9713b7566f607.r2.dev/90s-hindi-songs/oye-raju-pyar-na-kariyo-lyrical-video-hadh-kar-di-aapne-anand-bakshi-anand-raj-anand-govinda-rani-m.mp3',
     },
     {
       id: 'old-hindi-15',
       title: 'Panchhi Sur Mein Gaate Hain',
       artist: 'Udit Narayan',
       audio:
-        'https://pub-a6302670efd7401389e9713b7566f607.r2.dev/90s-hindi-songs/panchhi-soor-main-gaate-hain-lyric-al-video-sirf-tum-udit-narayan-sanjay-kapoor-priya-gill.mp3',
+        'https://pub-a6302670efd7401389e9713b7566f607.r2.dev/90s-hindi-songs/panchhi-soor-main-gaate-hain-lyrical-video-sirf-tum-udit-narayan-sanjay-kapoor-priya-gill.mp3',
     },
     {
       id: 'old-hindi-16',
@@ -165,7 +165,7 @@ const playlists = {
       title: 'Sab Kuchh Bhula Diya',
       artist: 'Sonu Nigam, Sapna Awasthi',
       audio:
-        'https://pub-a6302670efd7401389e9713b7566f607.r2.dev/90s-hindi-songs/sab-kuchh-bhula-diya-lyrical-video-hum-tumhare-hain-sanam-sonu-nigam-sapna-a-shahrukh-khan-madhuri-d.mp3',
+        'https://pub-a6302670efd7401389e9713b7566f607.r2.dev/90s-hindi-songs/sab-kuchh-bhula-diya-lyrical-video-hum-tumhare-hain-sanam-sonu-n-sapna-a-shahrukh-khan-madhuri-d.mp3',
     },
     {
       id: 'old-hindi-18',
@@ -179,14 +179,14 @@ const playlists = {
       title: 'Tu Pyar Hai Kisi Aur Ka',
       artist: 'Anuradha Paudwal, Kumar Sanu',
       audio:
-        'https://pub-a6302670efd7401389e9713b7566f607.r2.dev/90s-hindi-songs/tu-pyar-hai-kisi-aur-ka-full-song-aamir-k-pooja-b-anuradha-p-kumar-s-anu-dil-hai-ke-manta-nahin.mp3',
+        'https://pub-a6302670efd7401389e9713b7566f607.r2.dev/90s-hindi-songs/tu-pyar-hai-kisi-aur-ka-full-song-aamir-k-pooja-b-anuradha-p-kumar-sanu-dil-hai-ke-manta-nahin.mp3',
     },
     {
       id: 'old-hindi-20',
       title: 'Aisa Deewana',
       artist: 'Sonu Nigam',
       audio:
-        'https://pub-a6302670efd7401389e9713b7566f607.r2.dev/90s-hindi-songs/aisa-deewana-lyrical-video-song-dil-maange-more-sonu-nigam-himesh-resampiya-shahid-kapoor-tulip-joshi.mp3',
+        'https://pub-a6302670efd7401389e9713b7566f607.r2.dev/90s-hindi-songs/aisa-deewana-lyrical-video-song-dil-maange-more-sonu-nigam-himesh-r-shahid-kapoor-tulip-joshi.mp3',
     },
   ],
 }
