@@ -1,20 +1,24 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import playlist from '../data/playlist'
+import playlists from '../data/playlist'
+
+const DEFAULT_CATEGORY = 'ghazals'
 
 // Encapsulates all HTML5 <audio> state and controls for the playlist.
 // The returned `audioRef` must be attached to an <audio> element.
 function usePlayer() {
   const audioRef = useRef(null)
+  const [activeCategory, setActiveCategory] = useState(DEFAULT_CATEGORY)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
   const [duration, setDuration] = useState(0)
-  const [volume, setVolume] = useState(1)
 
-  const currentSong = playlist[currentIndex]
+  const currentPlaylist = playlists[activeCategory]
+  const currentSong = currentPlaylist[currentIndex]
 
-  // Load the new track whenever the current song changes, and keep
-  // playing if we were already playing (e.g. after next/previous).
+  // Load the new track whenever the current song changes (either because
+  // of next/previous, or because the active category switched and the
+  // index reset), and keep playing if we were already playing.
   useEffect(() => {
     const audio = audioRef.current
     if (!audio) return
@@ -31,7 +35,7 @@ function usePlayer() {
     }
     // Only re-run when the track itself changes.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentIndex])
+  }, [currentIndex, activeCategory])
 
   // Pausing/resuming here never touches currentTime — the browser keeps
   // the audio position exactly where it was, so playback continues from
@@ -52,18 +56,6 @@ function usePlayer() {
       .catch(() => setIsPlaying(false))
   }, [isPlaying])
 
-  const changeVolume = useCallback((value) => {
-    const audio = audioRef.current
-    const nextVolume = Math.min(1, Math.max(0, Number(value)))
-
-    setVolume(nextVolume)
-    if (audio) audio.volume = nextVolume
-  }, [])
-
-  useEffect(() => {
-    if (audioRef.current) audioRef.current.volume = volume
-  }, [volume])
-
   const handlePlay = useCallback(() => {
     setIsPlaying(true)
   }, [])
@@ -73,21 +65,27 @@ function usePlayer() {
   }, [])
 
   const playNext = useCallback(() => {
-    setCurrentIndex((index) => (index + 1) % playlist.length)
+    setCurrentIndex((index) => (index + 1) % currentPlaylist.length)
     setIsPlaying(true)
-  }, [])
+  }, [currentPlaylist.length])
 
   const playPrevious = useCallback(() => {
-    setCurrentIndex((index) => (index - 1 + playlist.length) % playlist.length)
+    setCurrentIndex((index) => (index - 1 + currentPlaylist.length) % currentPlaylist.length)
     setIsPlaying(true)
-  }, [])
+  }, [currentPlaylist.length])
 
-  // Jumps directly to a chosen track (used by the playlist panel) and
-  // starts playing it immediately.
-  const selectSong = useCallback((index) => {
-    setCurrentIndex(index)
-    setIsPlaying(true)
-  }, [])
+  // Switches the active category (e.g. "ghazals" -> "oldHindi"). Next/
+  // previous then operate only within the newly selected collection.
+  // Playback isn't forced on or off here — whatever the play state was
+  // before the switch carries over, same as changing tracks does.
+  const setCategory = useCallback(
+    (category) => {
+      if (category === activeCategory || !playlists[category]) return
+      setActiveCategory(category)
+      setCurrentIndex(0)
+    },
+    [activeCategory],
+  )
 
   const seek = useCallback((time) => {
     const audio = audioRef.current
@@ -110,17 +108,16 @@ function usePlayer() {
 
   return {
     audioRef,
+    activeCategory,
+    setCategory,
     currentIndex,
     currentSong,
     isPlaying,
     currentTime,
     duration,
-    volume,
     togglePlay,
-    changeVolume,
     playNext,
     playPrevious,
-    selectSong,
     seek,
     handleTimeUpdate,
     handleLoadedMetadata,

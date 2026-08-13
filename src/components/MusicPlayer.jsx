@@ -1,23 +1,21 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import usePlayer from '../player/usePlayer'
 import formatTime from '../player/formatTime'
-import PlaylistPanel from './PlaylistPanel'
+import CategoryMenu from './CategoryMenu'
 import './MusicPlayer.css'
 
 function MusicPlayer({ onPlayingChange }) {
   const {
     audioRef,
-    currentIndex,
+    activeCategory,
+    setCategory,
     currentSong,
     isPlaying,
     currentTime,
     duration,
-    volume,
     togglePlay,
-    changeVolume,
     playNext,
     playPrevious,
-    selectSong,
     seek,
     handleTimeUpdate,
     handleLoadedMetadata,
@@ -26,15 +24,39 @@ function MusicPlayer({ onPlayingChange }) {
     handlePause,
   } = usePlayer()
 
-  const [isPlaylistOpen, setIsPlaylistOpen] = useState(false)
+  const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false)
+  const playerRef = useRef(null)
 
   // Let the parent (vinyl disk animation) know when playback state changes.
   useEffect(() => {
     if (onPlayingChange) onPlayingChange(isPlaying)
   }, [isPlaying, onPlayingChange])
 
+  // Close the category menu on outside click, same as a typical dropdown.
+  useEffect(() => {
+    if (!isCategoryMenuOpen) return
+
+    function handleOutsideClick(event) {
+      if (playerRef.current && !playerRef.current.contains(event.target)) {
+        setIsCategoryMenuOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleOutsideClick)
+    return () => document.removeEventListener('mousedown', handleOutsideClick)
+  }, [isCategoryMenuOpen])
+
+  const handleCategorySelect = (category) => {
+    setCategory(category)
+    setIsCategoryMenuOpen(false)
+  }
+
   return (
-    <div className="player">
+    <div className="player" ref={playerRef}>
+      {isCategoryMenuOpen && (
+        <CategoryMenu activeCategory={activeCategory} onSelect={handleCategorySelect} />
+      )}
+
       <audio
         ref={audioRef}
         src={currentSong.audio}
@@ -54,9 +76,10 @@ function MusicPlayer({ onPlayingChange }) {
         <button
           type="button"
           className="player__playlist-toggle"
-          onClick={() => setIsPlaylistOpen(true)}
-          aria-label="Open playlist"
-          title="Open playlist"
+          onClick={() => setIsCategoryMenuOpen((open) => !open)}
+          aria-label="Choose playlist category"
+          title="Choose playlist category"
+          aria-expanded={isCategoryMenuOpen}
         >
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M4 6h16v2H4zM4 11h16v2H4zM4 16h10v2H4z" />
@@ -78,46 +101,6 @@ function MusicPlayer({ onPlayingChange }) {
       <p className="player__time">
         {formatTime(currentTime)} / {formatTime(duration)}
       </p>
-
-      <div className="player__volume" aria-label="Volume control">
-        <button
-          type="button"
-          className="player__volume-button"
-          onClick={() => changeVolume(volume > 0 ? 0 : 1)}
-          aria-label={volume > 0 ? 'Mute' : 'Unmute'}
-          title={volume > 0 ? 'Mute' : 'Unmute'}
-        >
-          {volume === 0 ? (
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M4 9v6h4l5 4V5L8 9H4z" />
-              <path d="m17 9-5 6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-              <path d="m12 9 5 6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-            </svg>
-          ) : volume < 0.5 ? (
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M4 9v6h4l5 4V5L8 9H4z" />
-              <path d="M16 10a3 3 0 0 1 0 4" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-            </svg>
-          ) : (
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M4 9v6h4l5 4V5L8 9H4z" />
-              <path d="M16 9a5 5 0 0 1 0 6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-              <path d="M18.5 6.5a8.5 8.5 0 0 1 0 11" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-            </svg>
-          )}
-        </button>
-
-        <input
-          type="range"
-          className="player__volume-range"
-          min="0"
-          max="1"
-          step="0.01"
-          value={volume}
-          onChange={(event) => changeVolume(event.target.value)}
-          aria-label="Volume"
-        />
-      </div>
 
       <div className="player__controls">
         <button
@@ -162,17 +145,6 @@ function MusicPlayer({ onPlayingChange }) {
           </svg>
         </button>
       </div>
-
-      {isPlaylistOpen && (
-        <PlaylistPanel
-          currentIndex={currentIndex}
-          onSelect={(index) => {
-            selectSong(index)
-            setIsPlaylistOpen(false)
-          }}
-          onClose={() => setIsPlaylistOpen(false)}
-        />
-      )}
     </div>
   )
 }
