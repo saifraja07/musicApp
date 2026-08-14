@@ -1,4 +1,15 @@
- .app {
+/* Prevent white flash before poster images and app CSS are painted. */
+html,
+body,
+#root {
+  margin: 0;
+  width: 100%;
+  min-height: 100%;
+  background: #844716;
+}
+
+.app {
+  background: #0b0807;
   position: relative;
   width: 100%;
   height: 100dvh;
@@ -17,7 +28,7 @@
 .app__bg {
   position: absolute;
   inset: 0;
-  background-image: url('/bg-poster-desktop.webp');
+  background-image: url("/bg-poster-desktop.webp");
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
@@ -25,7 +36,7 @@
 
 @media (max-width: 640px) {
   .app__bg {
-    background-image: url('/bg-poster-mobile.webp');
+    background-image: url("/bg-poster-mobile.webp");
     background-position: center center;
   }
 }
@@ -40,7 +51,7 @@
 /* Landscape phones/tablets should use the desktop composition. */
 @media (orientation: landscape) and (max-height: 600px) {
   .app__bg {
-    background-image: url('/bg-poster-desktop.webp');
+    background-image: url("/bg-poster-desktop.webp");
     background-position: center center;
   }
 }
@@ -61,6 +72,10 @@
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(120% 100% at 50% 45%, transparent 38%, rgba(8, 3, 2, 0.62) 100%),
+    radial-gradient(
+      120% 100% at 50% 45%,
+      transparent 38%,
+      rgba(8, 3, 2, 0.62) 100%
+    ),
     linear-gradient(to top, rgba(6, 2, 2, 0.7) 0%, transparent 32%);
 }
