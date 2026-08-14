@@ -4,7 +4,7 @@ import formatTime from '../player/formatTime'
 import CategoryMenu from './CategoryMenu'
 import './MusicPlayer.css'
 
-function MusicPlayer({ onPlayingChange }) {
+function MusicPlayer() {
   const {
     audioRef,
     activeCategory,
@@ -27,10 +27,6 @@ function MusicPlayer({ onPlayingChange }) {
   const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false)
   const playerRef = useRef(null)
 
-  // Let the parent (vinyl disk animation) know when playback state changes.
-  useEffect(() => {
-    if (onPlayingChange) onPlayingChange(isPlaying)
-  }, [isPlaying, onPlayingChange])
 
   // Close the category menu on outside click, same as a typical dropdown.
   useEffect(() => {

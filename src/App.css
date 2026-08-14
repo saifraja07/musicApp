@@ -1,61 +1,51 @@
-.app {
+ .app {
   position: relative;
   width: 100%;
   height: 100dvh;
+  min-height: 100%;
   overflow: hidden;
   overscroll-behavior: none;
   isolation: isolate;
-
-  /*
-    Shared spacing budget for the bottom-anchored player and the title
-    above it. --player-gap/--player-h describe the player's own offset
-    from the viewport bottom and its approximate rendered height;
-    --title-clear is the breathing room the title keeps above it.
-    The title's `bottom` is computed from these (see .app__title) so
-    the two elements can never drift into each other, regardless of
-    viewport height — no separate tuned percentages to keep in sync.
-  */
-  --player-gap: 24px;
-  --player-h: 190px;
-  --title-clear: 26px;
-}
-
-@media (max-width: 640px) {
-  .app {
-    --player-gap: 18px;
-    --player-h: 175px;
-    --title-clear: 22px;
-  }
-}
-
-@media (orientation: landscape) and (max-height: 480px) {
-  .app {
-    --player-gap: 10px;
-    --player-h: 145px;
-    --title-clear: 16px;
-  }
 }
 
 /*
-  Background layer.
-  Swap in the real poster photograph by placing it at
-  `public/bg-poster.jpg` and uncommenting the url() below —
-  the gradient stays as a graceful fallback underneath it.
+  Responsive poster:
+  - Desktop/tablet uses the wide desktop artwork.
+  - Small screens use the tall mobile artwork.
+  `cover` fills every viewport without stretching the image.
 */
 .app__bg {
   position: absolute;
   inset: 0;
-  background-image:
-    url('/bg-poster.webp'),
-    radial-gradient(120% 90% at 25% 15%, #7a2f1f 0%, transparent 55%),
-    radial-gradient(100% 80% at 80% 85%, #3a1310 0%, transparent 60%),
-    linear-gradient(155deg, #3a1310 0%, #6b2318 35%, #a8492a 65%, #d1a04a 100%);
+  background-image: url('/bg-poster-desktop.webp');
   background-size: cover;
-  background-position: center 35%;
+  background-position: center center;
   background-repeat: no-repeat;
 }
 
-/* Subtle film grain, screened over the background for a vintage feel */
+@media (max-width: 640px) {
+  .app__bg {
+    background-image: url('/bg-poster-mobile.webp');
+    background-position: center center;
+  }
+}
+
+/* Small phones: keep the tall poster centered while avoiding distortion. */
+@media (max-width: 380px) {
+  .app__bg {
+    background-position: center center;
+  }
+}
+
+/* Landscape phones/tablets should use the desktop composition. */
+@media (orientation: landscape) and (max-height: 600px) {
+  .app__bg {
+    background-image: url('/bg-poster-desktop.webp');
+    background-position: center center;
+  }
+}
+
+/* Subtle film grain, screened over the background for a vintage feel. */
 .app__grain {
   position: absolute;
   inset: 0;
@@ -65,7 +55,7 @@
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* Soft dark vignette for readability, heaviest at the edges */
+/* Soft dark vignette for readability, heaviest at the edges. */
 .app__vignette {
   position: absolute;
   inset: 0;
@@ -73,45 +63,4 @@
   background:
     radial-gradient(120% 100% at 50% 45%, transparent 38%, rgba(8, 3, 2, 0.62) 100%),
     linear-gradient(to top, rgba(6, 2, 2, 0.7) 0%, transparent 32%);
-}
-
-.app__title {
-  position: absolute;
-  left: 8%;
-  bottom: calc(var(--player-gap) + var(--player-h) + var(--title-clear));
-  right: 8%;
-  z-index: 1;
-  margin: 0;
-  max-width: 20ch;
-
-  font-family: 'Yatra One', 'Noto Sans Devanagari', system-ui, sans-serif;
-  font-weight: 400;
-  font-size: clamp(2.75rem, 9vw, 6.5rem);
-  line-height: 1.05;
-  letter-spacing: 0.01em;
-  color: #f3e4c4;
-  text-shadow:
-    0 2px 0 rgba(0, 0, 0, 0.35),
-    0 10px 30px rgba(0, 0, 0, 0.45),
-    0 0 40px rgba(209, 160, 74, 0.25);
-}
-
-@media (max-width: 640px) {
-  .app__title {
-    left: 6%;
-    right: 6%;
-    max-width: 100%;
-    padding-bottom: 14px;
-    /* Smaller floor keeps the title on one line on narrow phones,
-       so it stays a predictable height and clears the vinyl above it. */
-    font-size: clamp(2.1rem, 8vw, 3.8rem);
-  }
-}
-
-@media (orientation: landscape) and (max-height: 480px) {
-  .app__title {
-    /* vh-based (not vw-based) sizing: in short landscape views the
-       constraint is vertical space, not width. */
-    font-size: clamp(1.5rem, 7vh, 2.8rem);
-  }
 }
