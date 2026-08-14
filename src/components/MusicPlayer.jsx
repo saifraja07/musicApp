@@ -46,6 +46,55 @@ function MusicPlayer({ onPlayingChange }) {
     return () => document.removeEventListener('mousedown', handleOutsideClick)
   }, [isCategoryMenuOpen])
 
+  // Global keyboard shortcuts:
+  //   Space  - play / pause
+  //   N      - next song
+  //   P      - previous song
+  //   Right  - seek forward 5s
+  //   Left   - seek backward 5s
+  // Ignored while typing in an input/textarea/contenteditable, or while
+  // any modifier key is held, so browser/OS shortcuts keep working.
+  useEffect(() => {
+    function handleKeyDown(event) {
+      const target = event.target
+      const isTypingTarget =
+        target &&
+        (target.tagName === 'INPUT' ||
+          target.tagName === 'TEXTAREA' ||
+          target.isContentEditable)
+
+      if (isTypingTarget || event.metaKey || event.ctrlKey || event.altKey) return
+
+      switch (event.code) {
+        case 'Space':
+          event.preventDefault()
+          togglePlay()
+          break
+        case 'KeyN':
+          event.preventDefault()
+          playNext()
+          break
+        case 'KeyP':
+          event.preventDefault()
+          playPrevious()
+          break
+        case 'ArrowRight':
+          event.preventDefault()
+          seek(Math.min((audioRef.current?.currentTime ?? currentTime) + 5, duration || 0))
+          break
+        case 'ArrowLeft':
+          event.preventDefault()
+          seek(Math.max((audioRef.current?.currentTime ?? currentTime) - 5, 0))
+          break
+        default:
+          break
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [togglePlay, playNext, playPrevious, seek, audioRef, currentTime, duration])
+
   const handleCategorySelect = (category) => {
     setCategory(category)
     setIsCategoryMenuOpen(false)

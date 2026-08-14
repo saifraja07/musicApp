@@ -14,7 +14,7 @@ function App() {
 
       <VinylDisk isSpinning={isPlaying} />
 
-      <h1 className="app__title">पुरानी धुनें</h1>
+      <h1 className="app__title">बेरोजगार युवा</h1>
 
       <MusicPlayer onPlayingChange={setIsPlaying} />
     </div>
