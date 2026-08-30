@@ -1,13 +1,27 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import playlists from '../data/playlist'
 
-const DEFAULT_CATEGORY = 'oldHindi'
+const DEFAULT_CATEGORY = 'ghazals'
+const CATEGORY_STORAGE_KEY = 'activeCategory'
+
+// Reads the last-selected category from localStorage, falling back to the
+// default when nothing is stored
+function getInitialCategory() {
+  try {
+    const stored = window.localStorage.getItem(CATEGORY_STORAGE_KEY)
+    if (stored && playlists[stored]) return stored
+  } catch {
+    // localStorage can be unavailable (e.g. privacy mode) — ignore and
+    // fall back to the default category.
+  }
+  return DEFAULT_CATEGORY
+}
 
 // Encapsulates all HTML5 <audio> state and controls for the playlist.
 // The returned `audioRef` must be attached to an <audio> element.
 function usePlayer() {
   const audioRef = useRef(null)
-  const [activeCategory, setActiveCategory] = useState(DEFAULT_CATEGORY)
+  const [activeCategory, setActiveCategory] = useState(getInitialCategory)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
@@ -83,6 +97,12 @@ function usePlayer() {
       if (category === activeCategory || !playlists[category]) return
       setActiveCategory(category)
       setCurrentIndex(0)
+      try {
+        window.localStorage.setItem(CATEGORY_STORAGE_KEY, category)
+      } catch {
+        // Ignore storage failures (e.g. privacy mode) — category still
+        // switches for the current session.
+      }
     },
     [activeCategory],
   )
